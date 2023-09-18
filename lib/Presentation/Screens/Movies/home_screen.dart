@@ -43,19 +43,54 @@ class _HomeViewState extends ConsumerState<_HomeView> {
         child: CircularProgressIndicator(),
       );
     }
-    return Column(
-      children: [
-        const CustomAppBar(),
-        MovieSlideShow(movies: slideShow),
-        MovieHorizontalListView(
-          movie: nowPlayingMovies,
-          title: 'En cines',
-          subtitle: 'Lunes 20 ',
-          loadNextPage: () {
-            ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
-          },
-        )
-      ],
-    );
+    return CustomScrollView(slivers: [
+      const SliverAppBar(
+        floating: true,
+        flexibleSpace: FlexibleSpaceBar(
+          title: CustomAppBar(),
+        ),
+      ),
+      SliverList(
+          delegate: SliverChildBuilderDelegate((context, index) {
+        return Column(
+          children: [
+            MovieSlideShow(movies: slideShow),
+            MovieHorizontalListView(
+              movie: nowPlayingMovies,
+              title: 'En cines',
+              subtitle: 'Lunes 20',
+              loadNextPage: () {
+                ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
+              },
+            ),
+            MovieHorizontalListView(
+              movie: nowPlayingMovies,
+              title: 'Proximamente',
+              subtitle: 'En este mes',
+              loadNextPage: () {
+                ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
+              },
+            ),
+            MovieHorizontalListView(
+              movie: nowPlayingMovies,
+              title: 'Populares',
+              //subtitle: 'En este mes',
+              loadNextPage: () {
+                ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
+              },
+            ),
+            MovieHorizontalListView(
+              movie: nowPlayingMovies,
+              title: 'Mejor Calificadas',
+              subtitle: 'De todos los tiempos',
+              loadNextPage: () {
+                ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
+              },
+            ),
+            const SizedBox(height: 10),
+          ],
+        );
+      }, childCount: 1)),
+    ]);
   }
 }
